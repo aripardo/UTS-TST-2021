@@ -22,6 +22,11 @@ class User(BaseModel):
 
 @app.get("/allmenu")
 async def getall_menu(authorization: Optional[str] = Header(None)):
+    if authorization == None:
+        raise HTTPException(
+            status_code=401,
+            detail="Unauthorized User"
+        )
     token = authorization[7:]
     try:
         payload = jwt.decode(token, "SECRET", algorithms="HS256")
